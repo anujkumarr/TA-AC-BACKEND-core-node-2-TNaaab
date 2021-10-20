@@ -18,19 +18,15 @@ var indexAbsPath = __dirname + '/index.html';
 // let server = http.createServer(handleRequest);
 
 // function handleRequest(req, res) {
-//   var dataFormat = req.headers['content-type'];
-//   var store = '';
-//   req.on('data', (chunk) => {
-//     store = store + chunk;
-//   });
-  
-//   req.on('end', () => {
-//     if (req.method === 'POST' && req.url === '/') {
-//       res.setHeader('Content-Type', 'application/json')
-//       var parsedData = JSON.parse(store);
-//       res.end(JSON.stringify(parsedData));
-//     }
-//   })
+//   if (req.method === 'POST' && req.url === '/') {
+//     var store = '';
+//     req.on('data', (chunk) => {
+//       store += chunk;
+//     }).on('end', () => {
+//       res.statusCode = 201;
+//       res.end(store);
+//     })
+//   }
 // }
 
 // server.listen(3001, () => {
@@ -79,16 +75,13 @@ var indexAbsPath = __dirname + '/index.html';
 //   });
 
 //   req.on('end', () => {
-//     if (req.method) {
-//       res.setHeader('Content-Type', 'application/json');
-//       var parsedData = JSON.parse(store);
-//       res.end(JSON.stringify(parsedData));
+//     if (req.headers['content-type'] === 'application/x-www-form-urlencoded') {
+//       var formData = qs.parse(store);
+//       res.end(JSON.stringify(formData));
 //     }
 
-//     if (req.method) {
-//       res.setHeader('Content-Type', 'application/x-www-form-urlencoded');
-//       var parsedData = qs.parse(store);
-//       res.end(JSON.stringify(parsedData));
+//     if (req.headers['content-type'] === 'application/json') {
+//       res.end(store);
 //     }
 //   });
 // }
@@ -96,4 +89,69 @@ var indexAbsPath = __dirname + '/index.html';
 // server.listen(9000, () => {
 //   console.log('server is listening on 9k port');
 // });
+
+
+//
+
+
+// let server = http.createServer(handleRequest);
+
+// function handleRequest(req, res) {
+//   var dataFormat = req.headers['content-type'];
+//   var store = '';
+//   req.on('data', (chunk) => {
+//     store = store + chunk;
+//   });
+
+//   req.on('end', () => {
+//     if (req.headers['content-type'] === 'application/x-www-form-urlencoded') {
+//       var formData = qs.parse(store);
+//       res.end(JSON.stringify(formData));
+//     }
+
+//     if (req.headers['content-type'] === 'application/json') {
+//       var jsonData = JSON.parse(store);
+//       res.setHeader('Content-Type', 'text/html');
+//       res.end(`<h2>${jsonData.name}</h2> <p>${jsonData.email}</p>`);
+//     }
+//   });
+// }
+
+// server.listen(9000, () => {
+//   console.log('server is listening on 9k port');
+// });
+
+
+// 
+
+
+let server = http.createServer(handleRequest);
+
+function handleRequest(req, res) {
+  var dataFormat = req.headers['content-type'];
+  var store = '';
+  req.on('data', (chunk) => {
+    store = store + chunk;
+  });
+
+  req.on('end', () => {
+    if (req.headers['content-type'] === 'application/x-www-form-urlencoded') {
+      var formData = qs.parse(store);
+      res.setHeader('Content-Type', 'text/html');
+      res.end(`<h2>${formData.name}</h2> <p>${formData.email}</p>`);
+    }
+
+    if (req.headers['content-type'] === 'application/json') {
+      var jsonData = JSON.parse(store);
+      res.setHeader('Content-Type', 'text/html');
+      res.end(`<h2>${jsonData.name}</h2> <p>${jsonData.email}</p>`);
+    }
+  });
+}
+
+server.listen(9000, () => {
+  console.log('server is listening on 9k port');
+});
+
+
 
