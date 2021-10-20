@@ -32,7 +32,7 @@ function handleRequest(req, res) {
         `<h2>${formData.name}</h2> <p>${formData.email}</p> <p>${formData.age}</p>`
       );
     }
-  })  
+  })   
 }
 
 server.listen(5678, () => {
